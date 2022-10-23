@@ -19,25 +19,7 @@ snake.drawSnake();
 const score = document.getElementById("score");
 score.textContent = `score: ${controller.score}`;
 
-document.addEventListener("keydown", (e) => {
-  switch (e.key) {
-    case "ArrowUp":
-      controller.moveSnake(snake.snake, "up");
-      break;
-    case "ArrowDown":
-      controller.moveSnake(snake.snake, "down");
-      break;
-    case "ArrowLeft":
-      controller.moveSnake(snake.snake, "left");
-      break;
-    case "ArrowRight":
-      controller.moveSnake(snake.snake, "right");
-      break;
-
-    default:
-      break;
-  }
-});
+document.addEventListener("keydown", keyDown);
 
 const restart = document.getElementById("restart");
 const start = document.getElementById("start");
@@ -65,17 +47,39 @@ pause.addEventListener("click", (e) => {
   clearInterval(loop);
   pause.hidden = true;
   resume.hidden = false;
+  document.removeEventListener("keydown", keyDown);
 });
 
 resume.addEventListener("click", (e) => {
   loop = setInterval(game, 200);
   resume.hidden = true;
   pause.hidden = false;
+  document.addEventListener("keydown", keyDown);
 });
 
 function game() {
   controller.moveSnake(snake.snake, snake.lastDir);
   controller.checkInvalidCollision();
-  snake.checkHeadCollision()
+  snake.checkHeadCollision();
   score.textContent = `score: ${controller.score}`;
+}
+
+function keyDown(e) {
+  switch (e.key) {
+    case "ArrowUp":
+      snake.lastDir = "up";
+      break;
+    case "ArrowDown":
+      snake.lastDir = "down";
+      break;
+    case "ArrowLeft":
+      snake.lastDir = "left";
+      break;
+    case "ArrowRight":
+      snake.lastDir = "right";
+      break;
+
+    default:
+      break;
+  }
 }
