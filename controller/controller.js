@@ -102,7 +102,7 @@ export default class Controller {
       this.snake.snake[0][1] > this.canvas.height ||
       this.snake.checkHeadCollision()
     ) {
-      location = "finish-game.html";
+      location = "view/finish-game.html";
       return true;
     }
     return false;
