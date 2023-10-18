@@ -25,10 +25,14 @@ const restart = document.getElementById("restart");
 const start = document.getElementById("start");
 const pause = document.getElementById("pause");
 const resume = document.getElementById("resume");
+
+let initialInterval = 200;
+const minInterval = 50;
 let loop;
+let lastScore = 0
 
 start.addEventListener("click", (e) => {
-  loop = setInterval(game, 200);
+  loop = setInterval(game, initialInterval);
   start.hidden = true;
   restart.hidden = false;
 });
@@ -62,6 +66,13 @@ function game() {
   controller.checkInvalidCollision();
   snake.checkHeadCollision();
   score.textContent = `score: ${controller.score}`;
+
+  if (controller.score > lastScore) {
+    initialInterval = Math.max(minInterval, initialInterval - 10);
+    lastScore = controller.score;
+    clearInterval(loop);
+    loop = setInterval(game, initialInterval);
+  }
 }
 
 function keyDown(e) {
